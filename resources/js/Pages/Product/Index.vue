@@ -3,6 +3,8 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Welcome from "@/Components/Welcome.vue";
 import VDataTable from "@/components/VDataTable/index.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { router } from "@inertiajs/vue3";
+import route from "vendor/tightenco/ziggy/src/js";
 
 const props = defineProps({
     products: {
@@ -31,7 +33,7 @@ const statusColor = (status) => {
 };
 
 const handlePayment = (id) => {
-    console.log(id);
+    router.post(route("product.pay", id));
 };
 </script>
 

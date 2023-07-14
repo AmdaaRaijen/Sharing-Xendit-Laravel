@@ -132,7 +132,7 @@
     nprogress "^0.2.0"
     qs "^6.9.0"
 
-"@inertiajs/vue3@^1.0.0":
+"@inertiajs/vue3@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@inertiajs/vue3/-/vue3-1.0.9.tgz#a7308a06efa9a8f8a715c28c704697fdbd3d93ed"
   integrity sha512-KoH1KEYxtHs5vbBb3DTTRh9bjFLBakFeqfj95YzwQXkaKaGkE3M79O0n4CaQqG7BSiOdQ3Z3pB2bx+CHpYV9uA==
@@ -625,6 +625,13 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+inertia@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/inertia/-/inertia-0.0.7.tgz#ea5761cd995dbb50fab080aa024405afcfb3b78e"
+  integrity sha512-6+a6+E4DQyjqIjHv9yH9lG6FhzhR2eEaSKSwJc2V2I21zmFYNdvzV6e4uTcn1NRvUxYR9toDZOzxX4D0/wSFNg==
+  dependencies:
+    mime ">= 0.0.1"
+
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
@@ -753,6 +760,11 @@ mime-types@^2.1.12:
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
   dependencies:
     mime-db "1.52.0"
+
+"mime@>= 0.0.1":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-3.0.0.tgz#b374550dca3a0c18443b0c950a6a58f1931cf7a7"
+  integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
 
 mini-svg-data-uri@^1.2.3:
   version "1.4.4"
