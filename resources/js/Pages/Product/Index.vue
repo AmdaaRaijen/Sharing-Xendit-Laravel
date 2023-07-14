@@ -1,6 +1,8 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Welcome from "@/Components/Welcome.vue";
+import VDataTable from "@/components/VDataTable/index.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const props = defineProps({
     products: {
@@ -8,6 +10,25 @@ const props = defineProps({
         required: true,
     },
 });
+
+const head = ["Name", "image", "status", "Price", "Action"];
+
+const toRupiah = (price) => {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+    }).format(price);
+};
+
+const statusColor = (status) => {
+    if (status === "Need Payment") {
+        return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-red-500";
+    } else if (status === "Pending") {
+        return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-yellow-500";
+    } else if (status === "Success") {
+        return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-green-500";
+    }
+};
 </script>
 
 <template>
@@ -22,34 +43,36 @@ const props = defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="p-5">Product</div>
-                    <template v-for="product in props.products">
-                        <div class="p-5">
-                            <div class="flex justify-between">
-                                <div class="flex">
-                                    <div class="p-2">
-                                        <img
-                                            :src="product.image"
-                                            alt="product image"
-                                            class="w-20 h-20"
-                                        />
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="text-lg font-semibold">
-                                            {{ product.name }}
-                                        </div>
-                                        <div class="text-sm">
-                                            {{ product.description }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-2">
-                                    <div class="text-lg font-semibold">
-                                        {{ product.price }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                    <VDataTable :heads="head">
+                        <tr v-for="product in props.products">
+                            <td class="px-4 whitespace-nowrap h-16">
+                                {{ product.name }}
+                            </td>
+                            <td class="px-4 whitespace-nowrap h-16 p-2">
+                                <img
+                                    :src="product.image"
+                                    alt=""
+                                    class="w-20 h-20 border border-gray-200 rounded-sm"
+                                />
+                            </td>
+                            <td
+                                :class="
+                                    statusColor(
+                                        product.payments.status ??
+                                            'Need Payment'
+                                    )
+                                "
+                            >
+                                {{ product.payments.status ?? "Need Payment" }}
+                            </td>
+                            <td class="px-4 whitespace-nowrap h-16 p-2">
+                                Rp. {{ toRupiah(product.price) }}
+                            </td>
+                            <td class="px-4 whitespace-nowrap h-16 p-2">
+                                <PrimaryButton>Pay</PrimaryButton>
+                            </td>
+                        </tr>
+                    </VDataTable>
                 </div>
             </div>
         </div>

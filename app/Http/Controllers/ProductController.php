@@ -11,10 +11,11 @@ class ProductController extends Controller
     public function index()
     {
 
-        $products = Product::all();
+        $products = Product::with('payments')->get();
 
         return Inertia::render('Product/Index', [
             'products' => $products
+
         ]);
     }
 }
