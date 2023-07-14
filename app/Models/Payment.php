@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['external_id', 'email', 'status', 'product_id', 'payment_url'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
