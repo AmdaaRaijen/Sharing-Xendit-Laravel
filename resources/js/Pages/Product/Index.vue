@@ -66,7 +66,7 @@ const statusColor = (status) => {
                                 {{ product.payments.status ?? "Need Payment" }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
-                                Rp. {{ toRupiah(product.price) }}
+                                {{ toRupiah(product.price) }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
                                 <PrimaryButton>Pay</PrimaryButton>
