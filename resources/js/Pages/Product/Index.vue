@@ -29,6 +29,10 @@ const statusColor = (status) => {
         return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-green-500";
     }
 };
+
+const handlePayment = (id) => {
+    console.log(id);
+};
 </script>
 
 <template>
@@ -69,7 +73,10 @@ const statusColor = (status) => {
                                 {{ toRupiah(product.price) }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
-                                <PrimaryButton>Pay</PrimaryButton>
+                                <PrimaryButton
+                                    @click="handlePayment(product.id)"
+                                    >Pay</PrimaryButton
+                                >
                             </td>
                         </tr>
                     </VDataTable>
