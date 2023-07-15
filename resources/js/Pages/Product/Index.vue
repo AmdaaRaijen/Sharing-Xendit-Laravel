@@ -3,7 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Welcome from "@/Components/Welcome.vue";
 import VDataTable from "@/components/VDataTable/index.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import { ref } from "vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
@@ -97,20 +97,25 @@ const handlePayment = async (id) => {
                                 {{ toRupiah(product.price) }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
-                                <SecondaryButton
+                                <a
+                                    target="_blank"
+                                    :href="product.payment_url"
                                     v-if="
                                         product.status === 'pending' ||
                                         product.status === 'paid'
                                     "
-                                    :disabled="isLoading"
-                                    >Detail</SecondaryButton
                                 >
+                                    <SecondaryButton :disabled="isLoading">
+                                        Detail
+                                    </SecondaryButton>
+                                </a>
                                 <PrimaryButton
                                     v-else
                                     :disabled="isLoading"
                                     @click="handlePayment(product.id)"
-                                    >Pay</PrimaryButton
                                 >
+                                    Pay
+                                </PrimaryButton>
                             </td>
                         </tr>
                     </VDataTable>
