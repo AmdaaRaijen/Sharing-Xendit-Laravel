@@ -13,12 +13,11 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('payments')->get();
-        // get payment url from table payments and add it to products when there is no payment url in products table return null
+
         $products->map(function ($product) {
             $product->payment_url = $product->payments->count() > 0 ? $product->payments[0]->payment_url : null;
             return $product;
         });
-
 
         return Inertia::render('Product/Index', [
             'products' => $products,
@@ -82,5 +81,48 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
         ]);
+    }
+
+    public function callback(Request $request)
+    {
+        try {
+
+            $payment = Payment::where('external_id', $request->external_id)->first();
+            $callback_token = env('XENDIT_CALLBACK_TOKEN');
+
+            if ($request->header('x-callback-token') !== $callback_token) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid callback token'
+                ], 400);
+            }
+
+            if ($payment) {
+                $payment->update([
+                    'status' => $request->status,
+                ]);
+
+                $product = Product::find($payment->product_id);
+
+                if ($request->status === 'PAID') {
+                    $product->update([
+                        'status' => 'paid'
+                    ]);
+                } else {
+                    $product->update([
+                        'status' => 'expired'
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'status' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
