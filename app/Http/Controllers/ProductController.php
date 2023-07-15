@@ -26,57 +26,33 @@ class ProductController extends Controller
 
     public function createInvoice($request)
     {
-        $api_key = base64_encode(env('XENDIT_SECRET_KEY'));
-        $headers = [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ' . $api_key,
-        ];
+        // set api key and decode to base64
 
-        $res = Http::withHeaders($headers)->post('https://api.xendit.co/v2/invoices', [
-            'external_id' => $request['external_id'],
-            'amount' => $request['amount'],
-            'invoice_duration' => $request['invoice_duration'],
-        ]);
+        // set headers
 
+        // make request to xendit api
+
+        // return response as decoded json
         return json_decode($res->body(), true);
     }
 
     public function createPayment($id)
     {
-        $product = Product::find($id);
-        $isAlreadyExist = Payment::where('product_id', $id)
-            ->where('status', 'pending')
-            ->exists();
+        // find product by id
 
-        if ($isAlreadyExist) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You already have a pending payment for this product'
-            ], 400);
-        }
-        $externalId = 'INV-' . date('Ymd') . '-' . rand(100, 999);
+        // check if already have pending payment
 
-        $payment = $product->payments()->create([
-            'external_id' => $externalId,
-            'status' => 'pending',
-            'amount' => $product->price
-        ]);
+        // create external id
 
-        $params = [
-            'external_id' => $externalId,
-            'amount' => $product->price,
-            'invoice_duration' => 3600,
-        ];
+        // create to payment table
 
-        $invoice = $this->createInvoice($params);
+        // make request params
 
-        $payment->update([
-            'payment_url' => $invoice['invoice_url'],
-        ]);
+        // call create invoice function
 
-        $product->update([
-            'status' => 'pending'
-        ]);
+        // update payment url
+
+        // update product status
 
         return response()->json([
             'status' => 'success',
@@ -86,34 +62,11 @@ class ProductController extends Controller
     public function callback(Request $request)
     {
         try {
+            // find payment by external id
 
-            $payment = Payment::where('external_id', $request->external_id)->first();
-            $callback_token = env('XENDIT_CALLBACK_TOKEN');
+            // check callback token
 
-            if ($request->header('x-callback-token') !== $callback_token) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Invalid callback token'
-                ], 400);
-            }
-
-            if ($payment) {
-                $payment->update([
-                    'status' => $request->status,
-                ]);
-
-                $product = Product::find($payment->product_id);
-
-                if ($request->status === 'PAID') {
-                    $product->update([
-                        'status' => 'paid'
-                    ]);
-                } else {
-                    $product->update([
-                        'status' => 'expired'
-                    ]);
-                }
-            }
+            // check if payment exist and update status
 
             return response()->json([
                 'status' => 'success',
