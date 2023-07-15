@@ -34,6 +34,7 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::controller(ProductController::class)->prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/', 'index')->name('products.index');
+        Route::post('/{id}/create-payment', 'createPayment')->name('products.create-payment');
     });
 });

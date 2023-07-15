@@ -807,6 +807,11 @@ normalize-range@^0.1.2:
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
 
+notiwind@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/notiwind/-/notiwind-1.2.6.tgz#9796792b4000d31f7b6591779b8f5320ab107cbd"
+  integrity sha512-muU2I95/D97PDf/4dzB/H+C8CMpz2Dn0hZQ7ak7t1uMbe7/h0Hjy5OAHsLLfOgnE7UMrrocgQfXE6q66QW8L7g==
+
 nprogress@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
@@ -1016,6 +1021,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+sweetalert2@11.x:
+  version "11.7.16"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.7.16.tgz#e78f78325fcefd16498e6328c574f3d4446e505c"
+  integrity sha512-vxqVcA358RWdK/XOG1gFtOzT7qBH186Ry4gnW0Xtrx7vIo1mpnR8hG8MxQms4gz3JPbYQ6UIgZn0+hTK7in3Jw==
+
 tailwindcss@^3.1.0:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.3.3.tgz#90da807393a2859189e48e9e7000e6880a736daf"
@@ -1101,6 +1111,13 @@ vite@^4.0.0:
     rollup "^3.25.2"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-sweetalert2@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz#298663884149c7675d514490d1389f0614d875c0"
+  integrity sha512-Q7+TjQxNwGruT2jfPaSKMz18HHWs81r4umEwlrrtOf/QL5Iwl1T+tUaNkcvKB7Rf9rYftubt7NnOMjfDMnDH3A==
+  dependencies:
+    sweetalert2 "11.x"
 
 vue-types@^5.1.0:
   version "5.1.0"

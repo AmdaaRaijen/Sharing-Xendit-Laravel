@@ -4,7 +4,8 @@ import Welcome from "@/Components/Welcome.vue";
 import VDataTable from "@/components/VDataTable/index.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { router } from "@inertiajs/vue3";
-import route from "vendor/tightenco/ziggy/src/js";
+import { notify } from "notiwind";
+import { ref } from "vue";
 
 const props = defineProps({
     products: {
@@ -12,6 +13,8 @@ const props = defineProps({
         required: true,
     },
 });
+
+const isLoading = ref(false);
 
 const head = ["Name", "image", "status", "Price", "Action"];
 
@@ -32,8 +35,14 @@ const statusColor = (status) => {
     }
 };
 
-const handlePayment = (id) => {
-    router.post(route("product.pay", id));
+const handlePayment = async (id) => {
+    isLoading.value = true;
+    axios
+        .post(route("products.create-payment", { id: id }))
+        .then((res) => {
+            window.location.reload();
+        })
+        .finally(() => (isLoading.value = false));
 };
 </script>
 
@@ -76,6 +85,7 @@ const handlePayment = (id) => {
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
                                 <PrimaryButton
+                                    :disabled="isLoading"
                                     @click="handlePayment(product.id)"
                                     >Pay</PrimaryButton
                                 >
