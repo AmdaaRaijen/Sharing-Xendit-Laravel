@@ -4,8 +4,9 @@ import Welcome from "@/Components/Welcome.vue";
 import VDataTable from "@/components/VDataTable/index.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { router } from "@inertiajs/vue3";
-import { notify } from "notiwind";
+import Swal from "sweetalert2";
 import { ref } from "vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const props = defineProps({
     products: {
@@ -26,11 +27,11 @@ const toRupiah = (price) => {
 };
 
 const statusColor = (status) => {
-    if (status === "Need Payment") {
+    if (status === "need_payment") {
         return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-red-500";
-    } else if (status === "Pending") {
+    } else if (status === "pending") {
         return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-yellow-500";
-    } else if (status === "Success") {
+    } else if (status === "paid") {
         return "px-4 whitespace-nowrap h-16 p-2 font-semibold text-green-500";
     }
 };
@@ -40,7 +41,22 @@ const handlePayment = async (id) => {
     axios
         .post(route("products.create-payment", { id: id }))
         .then((res) => {
-            window.location.reload();
+            Swal.fire({
+                title: "SUCCESS",
+                text: "success to create payment",
+                icon: "success",
+            }).then(() => {
+                window.location.reload();
+            });
+        })
+        .catch((err) => {
+            Swal.fire({
+                title: "FAILED",
+                text: err.response.data.message,
+                icon: "warning",
+            }).then(() => {
+                window.location.reload();
+            });
         })
         .finally(() => (isLoading.value = false));
 };
@@ -70,21 +86,27 @@ const handlePayment = async (id) => {
                                     class="w-20 h-20 border border-gray-200 rounded-sm"
                                 />
                             </td>
-                            <td
-                                :class="
-                                    statusColor(
-                                        product.payments.status ??
-                                            'Need Payment'
-                                    )
-                                "
-                            >
-                                {{ product.payments.status ?? "Need Payment" }}
+                            <td :class="statusColor(product.status)">
+                                {{
+                                    product.status === "need_payment"
+                                        ? "Need Payment"
+                                        : product.status
+                                }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
                                 {{ toRupiah(product.price) }}
                             </td>
                             <td class="px-4 whitespace-nowrap h-16 p-2">
+                                <SecondaryButton
+                                    v-if="
+                                        product.status === 'pending' ||
+                                        product.status === 'paid'
+                                    "
+                                    :disabled="isLoading"
+                                    >Detail</SecondaryButton
+                                >
                                 <PrimaryButton
+                                    v-else
                                     :disabled="isLoading"
                                     @click="handlePayment(product.id)"
                                     >Pay</PrimaryButton

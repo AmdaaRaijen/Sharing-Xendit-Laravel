@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,17 +11,26 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('payments')->get();
+        $products = Product::all();
 
         return Inertia::render('Product/Index', [
-            'products' => $products
-
+            'products' => $products,
         ]);
     }
 
     public function createPayment($id)
     {
         $product = Product::find($id);
+        $isAlreadyExist = Payment::where('product_id', $id)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($isAlreadyExist) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You already have a pending payment for this product'
+            ], 400);
+        }
 
         $externalId = 'INV-' . $product->id . '-' . time();
 
@@ -29,6 +39,11 @@ class ProductController extends Controller
             'status' => 'pending',
             'amount' => $product->price
         ]);
+
+        $product->update([
+            'status' => 'pending'
+        ]);
+
 
         return response()->json([
             'status' => 'success',
